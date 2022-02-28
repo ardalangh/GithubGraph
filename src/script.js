@@ -192,18 +192,15 @@ cubeFolder.open()
 const planeWidth = plane.geometry.parameters.width;
 const planeHeight = plane.geometry.parameters.width;
 
-/* const possiblePositions = [];
-for (let i=-4; i<4; i++) {
-    for (let j=-4; j<4; j++) {
-        possiblePositions.push([i*20, j * 20])
-    }
-} */
+console.log(planeHeight);
+console.log(planeWidth);
+
 
 const possiblePositions = [];
 let prodY = 0;
-for (let i=4; i>-1; i--) {
+for (let i=(planeHeight/2 - 10)/10; i>-1; i--) {
     let prodX = 0;
-    for (let j=-4; j<1; j++) {
+    for (let j=-(planeWidth/2 - 10)/10; j<1; j++) {
         possiblePositions.push([(i*10) - (prodY*10), (j*10) + (prodX * 10)])
         prodX+= 1;
     }

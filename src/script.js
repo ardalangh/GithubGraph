@@ -13,16 +13,6 @@ import {AmbientLight, DoubleSide, MeshBasicMaterial, MeshFaceMaterial} from 'thr
 
 const realData = {'Rust': 1000, 'Assembly': 87877, 'C': 303179, 'Python': 9388381, 'Shell': 5931, 'HTML': 75244, 'CSS': 172770, 'JavaScript': 269187, 'Java': 1353464, 'Gherkin': 8377, 'Go': 39406, 'Ruby': 225041,}
 
-//const planeWidth = plane.geometry.parameters.width;
-/* const possiblePositions = [];
-for (let i=-4; i<4; i++) {
-    for (let j=-4; j<4; j++) {
-        possiblePositions.push([i*20, j * 20])
-    }
-} */
-
-
-
 
 
 /**
@@ -164,7 +154,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 
 
-/* CUber laoder */
+/* CUber loader */
 
 const loader = new THREE.CubeTextureLoader();
 const texture = loader.load([
@@ -223,25 +213,21 @@ for (let i=4; i>-1; i--) {
 function getMax(obj) {
     return Math.max.apply(null,Object.keys(obj));
   }
+// The max value that we are allowed to have before graphs are out of screen
 const max = 100 * 7231000 / 11929857;
+// Grabs the values of dictionary and used to obtain the max
 let dicKeys = Object.values(realData);
 var max_of_array = Math.max.apply(Math, dicKeys);
 // The value that is going to be used in order to resize the height
 let resizeVar = max / max_of_array;
-console.log(resizeVar);
 
 
 
-const pos = []
-//const pos = 0;
-const spaceBetween = 10;
+
 for (const [key, value] of Object.entries(realData)) {
 
     const fileName = `${key.toLowerCase()}Logo.png`
-    //const height = 30 * value / 11929857;
-    // scale up or down depending on the size of the biggest commit
-
-    //const height = 100 * value / 11929857;
+    //Resizing the heights of graphs based on the resizing variable
     const height = resizeVar * value;
     const width = 10;
     const depth = 10;
@@ -259,14 +245,12 @@ for (const [key, value] of Object.entries(realData)) {
     ]
 
 
-
+    // Creates the cylinder based on given parameters
     const cylinder = new THREE.Mesh( geometryC, t );
     
     let pos = possiblePositions.pop()
+    // Sets the position of the cylinder based on the chordinates of possiblePositions
     cylinder.position.set(pos[0], height/2, pos[1])
-    //cylinder.position.set(width * i + spaceBetween,height/2, 0)
-    //cylinder.position.set((width * i) + (i * spaceBetween),height/2, 0)
-    //cylinder.position.set(-40, height/2, 0)
 
     scene.add( cylinder );
 }

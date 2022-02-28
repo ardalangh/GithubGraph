@@ -13,10 +13,13 @@ import {AmbientLight, DoubleSide, MeshBasicMaterial, MeshFaceMaterial} from 'thr
 
 const realData = {'Rust': 1000, 'Assembly': 87877, 'C': 303179, 'Python': 9388381, 'Shell': 5931, 'HTML': 75244, 'CSS': 172770, 'JavaScript': 269187, 'Java': 1353464, 'Gherkin': 8377, 'Go': 39406, 'Ruby': 225041,}
 
-const possiblePositions = [];
+//const planeWidth = plane.geometry.parameters.width;
+/* const possiblePositions = [];
 for (let i=-4; i<4; i++) {
-    for (let j=-4; j<)
-}
+    for (let j=-4; j<4; j++) {
+        possiblePositions.push([i*20, j * 20])
+    }
+} */
 
 
 
@@ -94,7 +97,7 @@ window.addEventListener('dblclick', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 1000)
-camera.position.set(75, 100, 0);
+camera.position.set(0, 120, 0);
 camera.lookAt(0,50,0)
 scene.add(camera)
 
@@ -196,18 +199,54 @@ cubeFolder.add(camera.position, 'y', 0, 100)
 cubeFolder.add(camera.position, 'z', 0, 100)
 cubeFolder.open()
 
+const planeWidth = plane.geometry.parameters.width;
+const planeHeight = plane.geometry.parameters.width;
+
+/* const possiblePositions = [];
+for (let i=-4; i<4; i++) {
+    for (let j=-4; j<4; j++) {
+        possiblePositions.push([i*20, j * 20])
+    }
+} */
+
+const possiblePositions = [];
+let prodY = 0;
+for (let i=4; i>-1; i--) {
+    let prodX = 0;
+    for (let j=-4; j<1; j++) {
+        possiblePositions.push([(i*10) - (prodY*10), (j*10) + (prodX * 10)])
+        prodX+= 1;
+    }
+    prodY+= 1;
+}
+
+function getMax(obj) {
+    return Math.max.apply(null,Object.keys(obj));
+  }
+const max = 100 * 7231000 / 11929857;
+let dicKeys = Object.values(realData);
+var max_of_array = Math.max.apply(Math, dicKeys);
+// The value that is going to be used in order to resize the height
+let resizeVar = max / max_of_array;
+console.log(resizeVar);
+
 
 
 const pos = []
-
-let i = 0
+//const pos = 0;
+const spaceBetween = 10;
 for (const [key, value] of Object.entries(realData)) {
 
     const fileName = `${key.toLowerCase()}Logo.png`
-    const height = 30 * value / 11929857;
+    //const height = 30 * value / 11929857;
+    // scale up or down depending on the size of the biggest commit
+
+    //const height = 100 * value / 11929857;
+    const height = resizeVar * value;
     const width = 10;
     const depth = 10;
     const geometryC = new RoundedBoxGeometry( width, height, depth, 7, 1 );
+
 
 
     const t = [
@@ -222,11 +261,14 @@ for (const [key, value] of Object.entries(realData)) {
 
 
     const cylinder = new THREE.Mesh( geometryC, t );
-
-    cylinder.position.set(width * i,height/2, 0)
+    
+    let pos = possiblePositions.pop()
+    cylinder.position.set(pos[0], height/2, pos[1])
+    //cylinder.position.set(width * i + spaceBetween,height/2, 0)
+    //cylinder.position.set((width * i) + (i * spaceBetween),height/2, 0)
+    //cylinder.position.set(-40, height/2, 0)
 
     scene.add( cylinder );
-    i = i +1;
 }
 
 
